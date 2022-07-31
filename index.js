@@ -27,7 +27,7 @@ server.get('/', (req, res)=>{
     res.send("<!DOCTYPE html><html><body><h1>Hello World!</h1></body></html>")
     });
 
-server.post('/signup', (req, res)=>{
+server.get('/signup', (req, res)=>{
   res.header('Access-Control-Allow-Origin', "*");
   res.header('Access-Control-Allow-Methods', 'POST');
   res.header("Access-Control-Allow-Headers", "accept, content-type");
