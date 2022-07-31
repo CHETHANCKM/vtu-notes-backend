@@ -6,6 +6,6 @@ app.get('/', (req, res)=>{
     res.send("<!DOCTYPE html><html><body><h1>Hello World!</h1></body></html>")
     });
 
-app.listen(port, ()=>{
+app.listen(process.env.PORT || port, ()=>{
     console.log(`Server is running at ${port}`)
 });
