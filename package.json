@@ -2,6 +2,7 @@
   "name": "dev",
   "version": "1.0.0",
   "description": "Dev",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/CHETHANCKM/vtu-notes-backend#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "firebase": "^9.9.1"
   }
 }
