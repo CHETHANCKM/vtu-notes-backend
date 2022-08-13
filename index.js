@@ -1,4 +1,4 @@
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, onValue, child, get } from "firebase/database";
 import { initializeApp } from 'firebase/app';
 import express from 'express';
 
@@ -31,13 +31,11 @@ server.get('/signup', (req, res)=>{
   res.header('Access-Control-Allow-Origin', "*");
   res.header('Access-Control-Allow-Methods', 'POST');
   res.header("Access-Control-Allow-Headers", "accept, content-type");
-
-  
-  var fullName = req.body.fullName.toUpperCase();
-  var email = req.body.email.toLowerCase();
-  var usn = req.body.usn.toUpperCase();
-  var branch = req.body.branch;
-  var college = req.body.college;
+  var fullName = req.query.fullName.toUpperCase();
+  var email = req.query.email.toLowerCase();
+  var usn = req.query.usn.toUpperCase();
+  var branch = req.query.branch;
+  var college = req.query.college;
 
   writeUserData(fullName, email, usn, branch, college);
 
@@ -55,6 +53,39 @@ server.get('/signup', (req, res)=>{
       }
 });
 
+server.get('/getAllScheme', (req, res)=>{
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Methods', 'POST');
+  res.header("Access-Control-Allow-Headers", "accept, content-type");
+  const dbRef = ref(getDatabase());
+
+  get(child(dbRef, 'scheme')).then((snapshot) => {
+    if (snapshot.exists()) {
+      res.send(snapshot.val());
+    } else {
+      res.send("No schemes found");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+});
+
+server.get('/getAllModule', (req, res)=>{
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Methods', 'POST');
+  res.header("Access-Control-Allow-Headers", "accept, content-type");
+  const dbRef = ref(getDatabase());
+
+  get(child(dbRef, 'module')).then((snapshot) => {
+    if (snapshot.exists()) {
+      res.send(snapshot.val());
+    } else {
+      res.send("No module found");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+});
 
 server.listen(process.env.PORT || port, ()=>{
     console.log(`Server is running at ${port}`)
