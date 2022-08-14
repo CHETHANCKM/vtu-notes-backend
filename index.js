@@ -53,6 +53,29 @@ server.get('/signup', (req, res)=>{
       }
 });
 
+server.get('/addSubject', (req, res)=>{
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Methods', 'POST');
+  res.header("Access-Control-Allow-Headers", "accept, content-type");
+  var branch = req.query.branch.toUpperCase();
+  var semester = req.query.semester.toLowerCase();
+  var subCode = req.query.subCode.toUpperCase();
+  var subName = req.query.subName.toUpperCase();
+
+
+  writeUserData(branch, semester, subCode, subName);
+
+  function writeUserData(branch, semester, subCode, subName) {
+      const db = getDatabase();
+      set(ref(db, 'subjects/'+branch+'/'+semester+'/'), {
+        subjectCode: subCode,
+        subjectName : subName
+      }).then((data)=>{
+          res.status(200).send("Success");
+      });
+      }
+});
+
 server.get('/getAllScheme', (req, res)=>{
   res.header('Access-Control-Allow-Origin', "*");
   res.header('Access-Control-Allow-Methods', 'POST');
@@ -81,6 +104,24 @@ server.get('/getAllModule', (req, res)=>{
       res.send(snapshot.val());
     } else {
       res.send("No module found");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+});
+
+
+server.get('/getAllSubject', (req, res)=>{
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Methods', 'POST');
+  res.header("Access-Control-Allow-Headers", "accept, content-type");
+  const dbRef = ref(getDatabase());
+
+  get(child(dbRef, 'subject')).then((snapshot) => {
+    if (snapshot.exists()) {
+      res.send(snapshot.val());
+    } else {
+      res.send("No subject found");
     }
   }).catch((error) => {
     console.error(error);
