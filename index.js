@@ -62,12 +62,14 @@ server.get('/addSubject', (req, res)=>{
   var subCode = req.query.subCode.toUpperCase();
   var subName = req.query.subName.toUpperCase();
 
+  var scheme = subCode.substring(0,2);
+  scheme = '20'+scheme;
 
-  writeUserData(branch, semester, subCode, subName);
+  writeUserData(branch, semester, subCode, scheme, subName);
 
-  function writeUserData(branch, semester, subCode, subName) {
+  function writeUserData(branch, semester, subCode, scheme, subName) {
       const db = getDatabase();
-      set(ref(db, 'subjects/'+branch+'/'+semester+'/'), {
+      set(ref(db, 'subjects/'+branch+'/'+scheme+'/'+semester+'/'+subCode+"/"), {
         subjectCode: subCode,
         subjectName : subName
       }).then((data)=>{
